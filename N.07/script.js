@@ -4,7 +4,9 @@ function vowels(){
     var count = 0;
     for(var i = 0; i<str.length; i++){
         for(var j = 0; j < vowels.length; j++){
-            str[i].toLowerCase() == vowels[j] ? count++ : count;
+            if(str[i].toLowerCase() == vowels[j]){
+                count++;
+            }
         }
     }
     return console.log(`Гласных букв в строке: ${count}`); 
