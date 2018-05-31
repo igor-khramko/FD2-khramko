@@ -1,5 +1,5 @@
-function vowels(){
-    var vowels = prompt("Введите текст").match(/[аоиеёэыуюя]/gi).length;
+function vowels(str){
+    var vowels = str.match(/[аоиеёэыуюя]/gi).length;
     console.log("Гласных букв в строке:" , vowels); 
 }
-vowels();
+vowels(prompt("Введите текст"));
