@@ -1,5 +1,4 @@
-function vowels(){
-    var str = prompt("Введите текст");
+function vowels(str){
     var vowels = ["а", "о", "и", "е", "ё", "э", "ы", "у", "ю", "я"];
     var count = 0;
     for(var i = 0; i<str.length; i++){
@@ -9,6 +8,6 @@ function vowels(){
             }
         }
     }
-    return console.log(`Гласных букв в строке: ${count}`); 
+    console.log(`Гласных букв в строке: ${count}`); 
 }
-vowels();
+vowels(prompt("Введите текст"));
