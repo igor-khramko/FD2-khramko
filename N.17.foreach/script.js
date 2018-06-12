@@ -1,9 +1,21 @@
+// "use strict";
+// var str = prompt("Введите текст").split("");
+// function foreach(){
+//     var count = 0;
+//     function searchVowels(value, index){
+//         var vowels = ["а", "о", "и", "е", "ё", "э", "ы", "у", "ю", "я"];
+//         count = vowels.includes(value.toLowerCase()) ? count + 1 : count;
+//         return count;
+//     }
+//     return str.forEach(searchVowels);
+// }
+// console.log("Гласных букв в строке: " , foreach());  
+
 "use strict";
-var count = 0;
-function searchVowels(value, index){
+var str = prompt("Введите текст");
+function foreach(){    
+    var count = 0;
     var vowels = ["а", "о", "и", "е", "ё", "э", "ы", "у", "ю", "я"];
-    count = vowels.includes(value.toLowerCase()) ? count + 1 : count;
-    return count;
+    str.split("").forEach(value => count = vowels.includes(value.toLowerCase()) ? count + 1 : count);
 }
-var str = prompt("Введите текст").split("").forEach(searchVowels);
-console.log("Гласных букв в строке: " , count);  
+console.log("Гласных букв в строке: " , foreach(str));  
