@@ -1,8 +1,8 @@
 ﻿"use strict";
 var str = prompt("Введите текст").split("");
-function filter(){
+function filter(myStr){
     var vowels = ["а", "о", "и", "е", "ё", "э", "ы", "у", "ю", "я"];
-    str.filter(value => vowels.includes(value.toLowerCase()) ? true : false);
-    return str.length;
+    var vowelsArr = myStr.filter(value => vowels.includes(value.toLowerCase()) ? true : false);
+    return vowelsArr.length;
 }
 console.log("Гласных букв в строке: " , filter(str));

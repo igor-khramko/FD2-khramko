@@ -1,8 +1,8 @@
 "use strict";
 var str = prompt("Введите текст").split("");
-function reduce(){
+function reduce(myStr){
   var vowels = ["а", "о", "и", "е", "ё", "э", "ы", "у", "ю", "я"];
-  return str.reduce((count, value) => {
+  return myStr.reduce((count, value) => {
     return count = vowels.includes(value.toLowerCase()) ?  count + 1 : count;
   }
     , 0);
