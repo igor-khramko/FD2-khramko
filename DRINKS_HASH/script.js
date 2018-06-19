@@ -17,14 +17,15 @@ function HashStorage(){
         }
     }
     self.getList = function(){
-        return Object.keys(self.storage);
+        return self.storage != 0 ? Object.keys(self.storage) : "Пусто";
     }
 }
 var drinkStorage =new HashStorage();
-
 function add(){
     var drinkName = prompt("Введите название напитка");
-    var drinkInfo = prompt("Введите тип и рецепт напитка");
+    var drinkInfo = {} ;
+    drinkInfo["Тип напитка"] = confirm("Напиток алкогольный?") ? "Алкогольный" : "Безалкогольный";
+    drinkInfo["Рецепт"] = prompt("Введите рецепт напитка");
     drinkStorage.addValue(drinkName, drinkInfo);
     console.log(drinkStorage.storage);
 }
@@ -33,8 +34,8 @@ function get(){
     console.log("Информация о " + "'" + drinkName + "': " + drinkStorage.getValue(drinkName));
 }
 function deleteKey(){
-    var drinkName = prompt("Введите ключ");
-    drinkStorage.deleteValue(drinkName);
+    var drinkName = prompt("Введите название удаляемого напитка");
+    console.log(drinkStorage.deleteValue(drinkName));
 }
 function getList(){
     console.log(drinkStorage.getList());
