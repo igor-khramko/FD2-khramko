@@ -26,7 +26,6 @@ function add(){
     var drinkInfo = [] ;
     drinkInfo.push(confirm("Напиток алкогольный?") ? "aлкогольный" : "безалкогольный"); 
     drinkInfo.push(prompt("Введите рецепт напитка")); 
-    drinkInfo = drinkInfo.join("; ");
     drinkStorage.addValue(drinkName, drinkInfo);
     console.log(drinkStorage.storage);
 }
