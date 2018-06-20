@@ -17,15 +17,16 @@ function HashStorage(){
         }
     }
     self.getList = function(){
-        return self.storage != 0 ? Object.keys(self.storage) : "Пусто";
+        return Object.keys(self.storage);
     }
 }
 var drinkStorage =new HashStorage();
 function add(){
     var drinkName = prompt("Введите название напитка");
-    var drinkInfo = {} ;
-    drinkInfo["Тип напитка"] = confirm("Напиток алкогольный?") ? "Алкогольный" : "Безалкогольный";
-    drinkInfo["Рецепт"] = prompt("Введите рецепт напитка");
+    var drinkInfo = [] ;
+    drinkInfo.push(confirm("Напиток алкогольный?") ? "aлкогольный" : "безалкогольный"); 
+    drinkInfo.push(prompt("Введите рецепт напитка")); 
+    drinkInfo = drinkInfo.join("; ");
     drinkStorage.addValue(drinkName, drinkInfo);
     console.log(drinkStorage.storage);
 }
