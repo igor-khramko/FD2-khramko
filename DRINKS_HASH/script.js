@@ -34,8 +34,8 @@ function add(){
 }
 function get(){
     var drinkName = prompt("Введите название напитка");
-    console.log(`Информация о ${drinkName}:
-    ${drinkStorage.getValue(drinkName)}`);
+    console.log(`Информация о "${drinkName}":
+${drinkStorage.getValue(drinkName)}`);
 }
 function deleteKey(){
     var drinkName = prompt("Введите название удаляемого напитка");
