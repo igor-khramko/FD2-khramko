@@ -23,15 +23,19 @@ function HashStorage(){
 var drinkStorage =new HashStorage();
 function add(){
     var drinkName = prompt("Введите название напитка");
-    var drinkInfo = [] ;
+    var drinkInfo = [];
+    drinkInfo.push("Тип напитка: ");
     drinkInfo.push(confirm("Напиток алкогольный?") ? "aлкогольный" : "безалкогольный"); 
+    drinkInfo.push("; Рецепт напитка: ");
     drinkInfo.push(prompt("Введите рецепт напитка")); 
+    drinkInfo = drinkInfo.join("");
     drinkStorage.addValue(drinkName, drinkInfo);
     console.log(drinkStorage.storage);
 }
 function get(){
     var drinkName = prompt("Введите название напитка");
-    console.log("Информация о " + "'" + drinkName + "': " + drinkStorage.getValue(drinkName));
+    console.log(`Информация о ${drinkName}:
+    ${drinkStorage.getValue(drinkName)}`);
 }
 function deleteKey(){
     var drinkName = prompt("Введите название удаляемого напитка");
