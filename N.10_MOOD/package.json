@@ -1,0 +1,11 @@
+{
+  "name": "n.10_mood",
+  "version": "1.0.0",
+  "description": "N.10_MOOD",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "i.khramko",
+  "license": "ISC"
+}
