@@ -10,11 +10,13 @@
         var colorsHash = {};
         for ( var i=1; i<=colorsCount; i++ ) {
             var n=randomDiap(1,7);
-            if(colors[n] in colorsHash){
-                continue;
+            for(var j=0; j<=colorsCount; j++){     
+                if ( colors[n] in colorsHash ){
+                    n = randomDiap(1,7);
+                }
             }
-            colorsHash[colors[n]] = true;
+            colorsHash[colors[n]]=n;
         }
         return colorsHash;
     }
-    console.log(mood(3));
+ console.log(mood(3));
