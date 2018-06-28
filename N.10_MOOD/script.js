@@ -10,10 +10,10 @@
         var colorsHash = {};
         for ( var i=1; i<=colorsCount; i++ ) {
             var n=randomDiap(1,7);
-            for(var j=0; j<=colorsCount; j++){     
+            for(var j=0; j<=Infinity; j++){     
                 if ( colors[n] in colorsHash ){
                     n = randomDiap(1,7);
-                }
+                } else break;
             }
             colorsHash[colors[n]]=n;
         }
