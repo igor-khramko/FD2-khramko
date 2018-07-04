@@ -26,15 +26,17 @@ function formDef(formElements){
     form.name = "myForm";
     form.action = "http://fe.it-academy.by/TestForm.php";
     document.querySelector("body").appendChild(form);
+    function addElem(formElement, tagnameElement, kind){
+        var elem = document.createElement(tagnameElement);
+        elem.type = kind;
+        var label = document.createElement("label")
+        label.innerHTML = formElement.label;
+        form.appendChild(label);
+        elem.style.display = "block";
+        elem.style.margin = "5px";
+        return  form.appendChild(elem);
+    }
     for(i=0; i<formElements.length; i++){
-        function addElem(formElement, tagnameElement, kind){
-            var elem = document.createElement(tagnameElement);
-            elem.type = kind;
-            var label = document.createElement("label")
-            label.innerHTML = formElement.label;
-            form.appendChild(label);
-            return  form.appendChild(elem);
-        }
         if(formElements[i].kind === "longtext"){
             addElem(formElements[i], "input", "text");
         } else if(formElements[i].kind === "shorttext"){
@@ -61,10 +63,6 @@ function formDef(formElements){
             var button = addElem(formElements[i], "input", "submit");
             button.value = formElements[i].label.slice(0, -1);
         }
-    }
-    for(i=0; i<form.children.length; i++){
-        form.children[i].style.display = "block";
-        form.children[i].style.margin = "5px";
     }
 }
 formDef(formDef1);
