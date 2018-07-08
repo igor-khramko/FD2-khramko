@@ -29,9 +29,11 @@ function formDef(formElements){
     function addElem(formElement, tagnameElement, kind){
         var elem = document.createElement(tagnameElement);
         elem.type = kind;
-        var label = document.createElement("label")
-        label.innerHTML = formElement.label;
-        form.appendChild(label);
+        if(kind != "submit"){
+            var label = document.createElement("label")
+            label.innerHTML = formElement.label;
+            form.appendChild(label);
+        }
         elem.style.display = "block";
         elem.style.margin = "5px";
         return  form.appendChild(elem);
@@ -45,18 +47,28 @@ function formDef(formElements){
             addElem(formElements[i], "input", "text");
         } else if(formElements[i].kind === "combo"){
             var select = addElem(formElements[i], "select", "select");
-            var options = ["здоровье", "домашний уют", "бытовая техника"];
-            // for(var i=0; i<options.length; i++){
-            //     var option = document.createElement("option");
-            //     option.innerHTML = options[i];
-            //     select.appendChild(option);
-            // }
-            // select.lastChild.setAttribute("selected", "selected");
+            var variants = formElements[i].variants;
+            for(var j=0; j<variants.length; j++){
+                var option = document.createElement("option");
+                option.innerHTML = variants[j].text;
+                select.appendChild(option);
+            }
+            select.lastChild.setAttribute("selected", "selected");
             form.appendChild(select);
         } else if(formElements[i].kind === "check"){
             addElem(formElements[i], "input", "checkbox").setAttribute("checked", "checked");
         } else if(formElements[i].kind === "radio"){
-            addElem(formElements[i], "input", "radio");
+            var variants = formElements[i].variants;
+            var radiogroup = addElem(formElements[i], "div");
+            for(var j = 0; j<variants.length; j++){
+                var radio = document.createElement("input");
+                radio.setAttribute("type", "radio");
+                radio.setAttribute("name", "radio");
+                var radioLabel = document.createElement("label");
+                radioLabel.innerHTML = variants[j].text;
+                radiogroup.appendChild(radio);
+                radiogroup.appendChild(radioLabel);
+            }
         } else if(formElements[i].kind === "memo"){
             addElem(formElements[i], "textarea");
         } else if(formElements[i].kind === "submit"){
