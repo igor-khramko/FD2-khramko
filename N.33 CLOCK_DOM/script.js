@@ -70,6 +70,7 @@
     clock.appendChild(secondPointer);
 })()
 
+updateTime()
 setInterval(updateTime,1000);
 
 function updateTime() {
@@ -82,13 +83,13 @@ function updateTime() {
 function setRealTimeOnload(currTimeHash){
     var currTimeSec = currTimeHash.hours * 3600 + currTimeHash.minutes * 60 + currTimeHash.seconds;
     var hourPointer = document.querySelector(".hour-pointer");
-    hourPointer.style.transform = `rotate(${currTimeHash.hours*30 + 'deg'})`; //12 часов = 360* => 1 час = 30*
+    hourPointer.style.transform = `rotate(${(currTimeHash.hours%12)/12*360 + 360/12*currTimeHash.minutes/60 + 'deg'})`; 
 
     var minutePointer = document.querySelector(".minute-pointer");
-    minutePointer.style.transform = `rotate(${currTimeHash.minutes*6 + 'deg'})`; //60 минут = 360* => 1 мин = 6*
+    minutePointer.style.transform = `rotate(${currTimeHash.minutes/60*360 + 360/60*currTimeHash.seconds/60 + 'deg'})`; 
 
     var secondPointer = document.querySelector(".second-pointer");
-    secondPointer.style.transform = `rotate(${currTimeHash.seconds*6 + 'deg'})`; //1 сек = 1*
+    secondPointer.style.transform = `rotate(${currTimeHash.seconds/60*360 + 'deg'})`;
 }
 
 // дополняет строку val слева нулями до длины Len
