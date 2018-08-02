@@ -1,0 +1,14 @@
+.hour-pointer{
+    stroke : black;
+    stroke-width: 6;
+}
+
+.minute-pointer{
+    stroke : green;
+    stroke-width: 4;
+}
+
+.second-pointer{
+    stroke : red;
+    stroke-width: 2;
+}
