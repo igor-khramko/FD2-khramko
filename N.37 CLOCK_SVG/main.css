@@ -1,3 +1,8 @@
+.hour-number{
+    color: black;
+    text-align: center;
+}
+
 .hour-pointer{
     stroke : black;
     stroke-width: 6;
