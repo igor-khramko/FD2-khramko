@@ -1,0 +1,33 @@
+.game-field{
+    position: relative;
+    box-sizing: border-box;
+}
+
+.score{
+    border: 1px solid green;
+    box-sizing: border-box;
+    width: 70px;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-start{
+    margin: 10px 0;
+}
+
+.player1{
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.player2{
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.ball{
+    border-radius: 50%;
+    position: absolute;
+    box-sizing: border-box;
+}
