@@ -10,7 +10,7 @@ var gameStatus = 1; // 1 - мяч в игре; 2 - пауза в игре
 
 window.addEventListener("keydown", playKeysDown);
 window.addEventListener("keyup", playKeysUp);
-var buttonPressed = buttonStart.addEventListener("click", start);
+buttonStart.addEventListener("click", start);
 
 var RAF=
         // находим, какой метод доступен
