@@ -6,9 +6,11 @@ var player1Score = 0;
 var player2Score = 0;
 score1.innerHTML = player1Score;
 score2.innerHTML = player2Score;
+var gameStatus = 1; // 1 - мяч в игре; 2 - пауза в игре
 
-window.addEventListener("keydown", setPlayKeys);
-buttonStart.addEventListener("click", start);
+window.addEventListener("keydown", playKeysDown);
+window.addEventListener("keyup", playKeysUp);
+var buttonPressed = buttonStart.addEventListener("click", start);
 
 var RAF=
         // находим, какой метод доступен
@@ -23,18 +25,31 @@ var RAF=
             { window.setTimeout(callback, 1000 / 60); }
         ;
 
-function setPlayKeys(EO){
+function playKeysDown(EO){
     EO=EO||window.event;
+    EO.preventDefault();
     if (EO.keyCode==16 && gameAssets.player1.top>0){
-        gameAssets.player1.move(-gameAssets.player1.step);
+        gameAssets.player1.speedY = -1;
     } else if(EO.keyCode==17 && gameAssets.player1.bottom<gameAssets.playingField.bottom){
-        gameAssets.player1.move(gameAssets.player1.step);
+        gameAssets.player1.speedY = 1;
     } else if(EO.keyCode==38 && gameAssets.player2.top>0){
-        EO.preventDefault();
-        gameAssets.player2.move(-gameAssets.player2.step);
+        gameAssets.player2.speedY = -1;
     } else if(EO.keyCode==40 && gameAssets.player2.bottom<gameAssets.playingField.bottom){
-        EO.preventDefault();
-        gameAssets.player2.move(gameAssets.player2.step);
+        gameAssets.player2.speedY = 1;
+    }
+}
+
+function playKeysUp(EO){
+    EO=EO||window.event;
+    EO.preventDefault();
+    if (EO.keyCode==16 && gameAssets.player1.top>0){
+        gameAssets.player1.speedY = 0;
+    } else if(EO.keyCode==17 && gameAssets.player1.bottom<gameAssets.playingField.bottom){
+        gameAssets.player1.speedY = 0;
+    } else if(EO.keyCode==38 && gameAssets.player2.top>0){
+        gameAssets.player2.speedY = 0;
+    } else if(EO.keyCode==40 && gameAssets.player2.bottom<gameAssets.playingField.bottom){
+        gameAssets.player2.speedY = 0;
     }
 }
 
@@ -57,7 +72,7 @@ var gameAssets = (function createGameAssets(){
     function Player(){
         var self = this;
         self.color = "yellow";                                                  //цвет игрока
-        self.step = 4;                                                          //шаг ("скорость") игрока
+        self.speedY = 0;                                                        //"скорость") игрока
         self.width = 10;                                                        //ширина игрока
         self.height = 0.25*playingField.height;                                 //высота игрока
         self.score = 0;                                                         //счёт игрока
@@ -70,10 +85,9 @@ var gameAssets = (function createGameAssets(){
             self.view.style.backgroundColor = self.color;
             self.view.style.top = self.top + "px";
         }
-        self.move = function(step){                                             //перемещение игрока
-            self.center.y += step;
-            self.top = self.center.y - self.height/2;
-            self.bottom = self.center.y + self.height/2;
+        self.move = function(centerY){
+            self.top = centerY - self.height/2;
+            self.bottom = centerY + self.height/2;
             self.view.style.top = self.top + "px";
         }
     }
@@ -103,8 +117,6 @@ var gameAssets = (function createGameAssets(){
             view : document.querySelector(".ball"),
             radius : 15,
             color : "red",
-            speedX : 2,
-            speedY : 1,
             posX : playingField.center.x,
             posY : playingField.center.y,  
             move : function(){
@@ -125,50 +137,68 @@ var gameAssets = (function createGameAssets(){
 })();
 
 function start(){
-    RAF(tick);
+    gameAssets.ball.speedX=2;
+    gameAssets.ball.speedY=1;
+    tick();
 }
 
 function tick() {
-    gameAssets.ball.posX+=gameAssets.ball.speedX;
-    gameAssets.ball.posY+=gameAssets.ball.speedY;
-    // попал ли мяч в ракетку игрока 1
-    if (gameAssets.ball.posX == gameAssets.player1.width && gameAssets.ball.posY>gameAssets.player1.top - 3*gameAssets.ball.height/4 && gameAssets.ball.posY+gameAssets.ball.height/4<gameAssets.player1.bottom){
-        gameAssets.ball.speedX=-gameAssets.ball.speedX;
-        gameAssets.ball.posX=gameAssets.player1.width;  
-    }
-    // попал ли мяч в ракетку игрока 2
-    if (gameAssets.ball.posX == gameAssets.playingField.width - gameAssets.player2.width - gameAssets.ball.width && gameAssets.ball.posY>gameAssets.player2.top - 3*gameAssets.ball.height/4 && gameAssets.ball.posY+gameAssets.ball.height/4<gameAssets.player2.bottom){
-        gameAssets.ball.speedX=-gameAssets.ball.speedX;
-        gameAssets.ball.posX=gameAssets.playingField.width - gameAssets.player2.width - gameAssets.ball.width;
-    }
-    // вылетел ли мяч левее стены?
-    if (gameAssets.ball.posX<0){
-        gameAssets.ball.speedX=0;
-        gameAssets.ball.speedY=0;
-        gameAssets.player1.step=0;
-        gameAssets.player2.step=0;
-        player2Score++;
-        score2.innerHTML = player2Score;
-    }
-    // вылетел ли мяч правее стены?
-    if (gameAssets.ball.posX+gameAssets.ball.width>gameAssets.playingField.width){
-        gameAssets.ball.speedX=0;
-        gameAssets.ball.speedY=0;
-        gameAssets.player1.step=0;
-        gameAssets.player2.step=0;
-        player1Score+=1;
-        score1.innerHTML = player1Score;
-    }
-    // вылетел ли мяч выше стены?
-    if (gameAssets.ball.posY<0){
-        gameAssets.ball.speedY=-gameAssets.ball.speedY;
-        gameAssets.ball.posY=0;
-    }
-    // вылетел ли мяч ниже стены?
-    if (gameAssets.ball.posY+gameAssets.ball.height>gameAssets.playingField.height){
-        gameAssets.ball.speedY=-gameAssets.ball.speedY;
-        gameAssets.ball.posY=gameAssets.playingField.height-gameAssets.ball.height;
+    if(gameStatus == 1){
+        gameAssets.player1.center.y+=gameAssets.player1.speedY;
+        gameAssets.player2.center.y+=gameAssets.player2.speedY;
+        gameAssets.player1.move(gameAssets.player1.center.y);
+        gameAssets.player2.move(gameAssets.player2.center.y);
+        gameAssets.ball.posX+=gameAssets.ball.speedX;
+        gameAssets.ball.posY+=gameAssets.ball.speedY;
+    
+        // попал ли мяч в ракетку игрока 1
+        if (gameAssets.ball.posX == gameAssets.player1.width && gameAssets.ball.posY>gameAssets.player1.top - 3*gameAssets.ball.height/4 && gameAssets.ball.posY+gameAssets.ball.height/4<gameAssets.player1.bottom){
+            gameAssets.ball.speedX=-gameAssets.ball.speedX;
+            gameAssets.ball.posX=gameAssets.player1.width;  
+        }
+        // попал ли мяч в ракетку игрока 2
+        if (gameAssets.ball.posX == gameAssets.playingField.width - gameAssets.player2.width - gameAssets.ball.width && gameAssets.ball.posY>gameAssets.player2.top - 3*gameAssets.ball.height/4 && gameAssets.ball.posY+gameAssets.ball.height/4<gameAssets.player2.bottom){
+            gameAssets.ball.speedX=-gameAssets.ball.speedX;
+            gameAssets.ball.posX=gameAssets.playingField.width - gameAssets.player2.width - gameAssets.ball.width;
+        }
+        // вылетел ли мяч левее стены?
+        if (gameAssets.ball.posX<0 && gameStatus == 1){
+            gameAssets.ball.speedX=0;
+            gameAssets.ball.speedY=0;
+            gameAssets.player1.speedY=0;
+            gameAssets.player2.speedY=0;
+            player2Score++;
+            score2.innerHTML = player2Score;
+            gameStatus = 2;
+        }
+        // вылетел ли мяч правее стены?
+        if (gameAssets.ball.posX+gameAssets.ball.width>gameAssets.playingField.width && gameStatus == 1){
+            gameAssets.ball.speedX=0;
+            gameAssets.ball.speedY=0;
+            gameAssets.player1.speedY=0;
+            gameAssets.player2.speedY=0;
+            player1Score+=1;
+            score1.innerHTML = player1Score;
+            gameStatus = 2;
+        }
+        // вылетел ли мяч выше стены?
+        if (gameAssets.ball.posY<0){
+            gameAssets.ball.speedY=-gameAssets.ball.speedY;
+            gameAssets.ball.posY=0;
+        }
+        // вылетел ли мяч ниже стены?
+        if (gameAssets.ball.posY+gameAssets.ball.height>gameAssets.playingField.height){
+            gameAssets.ball.speedY=-gameAssets.ball.speedY;
+            gameAssets.ball.posY=gameAssets.playingField.height-gameAssets.ball.height;
+        }  
+        RAF(tick);
+    } else if(gameStatus == 2){
+        gameAssets.ball.posX = gameAssets.playingField.center.x - gameAssets.ball.radius;
+        gameAssets.ball.posY = gameAssets.playingField.center.y - gameAssets.ball.radius;
+        gameAssets.ball.move();
+        gameAssets.player1.move(gameAssets.playingField.center.y);
+        gameAssets.player2.move(gameAssets.playingField.center.y);
+        gameStatus = 1;
     }
     gameAssets.ball.move();
-    RAF(tick);    
 }
