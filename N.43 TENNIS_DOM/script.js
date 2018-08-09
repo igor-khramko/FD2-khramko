@@ -59,7 +59,7 @@ var gameAssets = (function createGameAssets(){
         width : 500,
         height : 300,
         background : "white",
-        border : "1px solid black"
+        border : "2px solid black"
     }
     playingField.center = {x: playingField.width/2, y: playingField.height/2};  //координаты центра игрового поля
     playingField.top = playingField.center.y - playingField.height/2;           //верхняя граница игрового поля
@@ -199,6 +199,7 @@ function tick() {
         }
         // вылетел ли мяч левее стены?
         if (gameAssets.ball.posX<0 && gameStatus == 1){
+            gameAssets.ball.posX = 0;
             gameAssets.ball.speedX=0;
             gameAssets.ball.speedY=0;
             gameAssets.player1.speedY=0;
@@ -209,6 +210,7 @@ function tick() {
         }
         // вылетел ли мяч правее стены?
         if (gameAssets.ball.posX+gameAssets.ball.width>gameAssets.playingField.width && gameStatus == 1){
+            gameAssets.ball.posX = gameAssets.playingField.width - gameAssets.ball.width;
             gameAssets.ball.speedX=0;
             gameAssets.ball.speedY=0;
             gameAssets.player1.speedY=0;
