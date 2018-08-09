@@ -19,6 +19,7 @@
 .player1{
     position: absolute;
     box-sizing: border-box;
+    border-width: 1px;
 }
 
 .player2{

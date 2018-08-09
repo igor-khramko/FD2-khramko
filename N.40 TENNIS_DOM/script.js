@@ -28,27 +28,27 @@ var RAF=
 function playKeysDown(EO){
     EO=EO||window.event;
     EO.preventDefault();
-    if (EO.keyCode==16 && gameAssets.player1.top>0){
-        gameAssets.player1.speedY = -1;
-    } else if(EO.keyCode==17 && gameAssets.player1.bottom<gameAssets.playingField.bottom){
-        gameAssets.player1.speedY = 1;
-    } else if(EO.keyCode==38 && gameAssets.player2.top>0){
-        gameAssets.player2.speedY = -1;
-    } else if(EO.keyCode==40 && gameAssets.player2.bottom<gameAssets.playingField.bottom){
-        gameAssets.player2.speedY = 1;
+    if (EO.keyCode==16){
+        gameAssets.player1.speedY = -2;
+    } else if(EO.keyCode==17){
+        gameAssets.player1.speedY = 2;
+    } else if(EO.keyCode==38){
+        gameAssets.player2.speedY = -2;
+    } else if(EO.keyCode==40){
+        gameAssets.player2.speedY = 2;
     }
 }
 
 function playKeysUp(EO){
     EO=EO||window.event;
     EO.preventDefault();
-    if (EO.keyCode==16 && gameAssets.player1.top>0){
+    if (EO.keyCode==16){
         gameAssets.player1.speedY = 0;
-    } else if(EO.keyCode==17 && gameAssets.player1.bottom<gameAssets.playingField.bottom){
+    } else if(EO.keyCode==17){
         gameAssets.player1.speedY = 0;
-    } else if(EO.keyCode==38 && gameAssets.player2.top>0){
+    } else if(EO.keyCode==38){
         gameAssets.player2.speedY = 0;
-    } else if(EO.keyCode==40 && gameAssets.player2.bottom<gameAssets.playingField.bottom){
+    } else if(EO.keyCode==40){
         gameAssets.player2.speedY = 0;
     }
 }
@@ -73,7 +73,7 @@ var gameAssets = (function createGameAssets(){
         var self = this;
         self.color = "yellow";                                                  //цвет игрока
         self.speedY = 0;                                                        //"скорость") игрока
-        self.width = 10;                                                        //ширина игрока
+        self.width = 0.02*playingField.width;                                                        //ширина игрока
         self.height = 0.25*playingField.height;                                 //высота игрока
         self.score = 0;                                                         //счёт игрока
         self.center = {x: self.width/2, y: playingField.center.y};              //координаты центра игрока
@@ -122,6 +122,10 @@ var gameAssets = (function createGameAssets(){
             move : function(){
                 ball.view.style.left = ball.posX + "px";
                 ball.view.style.top = ball.posY + "px";
+            },
+            setDefaultPosition : function(){
+                ball.view.style.left = ball.posX - ball.radius + "px";
+                ball.view.style.top = ball.posY - ball.radius + "px";
             }
         }
         ball.width = 2*ball.radius;
@@ -129,14 +133,26 @@ var gameAssets = (function createGameAssets(){
         ball.view.style.width = ball.width +"px";
         ball.view.style.height = ball.height +"px";
         ball.view.style.backgroundColor = ball.color;
-        ball.view.style.left = ball.posX - ball.radius + "px";
-        ball.view.style.top = ball.posY - ball.radius + "px";
+        ball.setDefaultPosition();
         return ball;
     })()
     return {playingField, ball, player1, player2};
 })();
 
+function setDefaultPosition(){
+    gameAssets.player1.center = {x: self.width/2, y: gameAssets.playingField.center.y}; 
+    gameAssets.player1.move(gameAssets.player1.center.y);
+
+    gameAssets.player2.center = {x: self.width/2, y: gameAssets.playingField.center.y};     
+    gameAssets.player2.move(gameAssets.player2.center.y);
+
+    gameAssets.ball.posX = gameAssets.playingField.center.x;
+    gameAssets.ball.posY = gameAssets.playingField.center.y;
+    gameAssets.ball.setDefaultPosition();
+}
+
 function start(){
+    setDefaultPosition();
     gameAssets.ball.speedX=2;
     gameAssets.ball.speedY=1;
     tick();
@@ -150,13 +166,33 @@ function tick() {
         gameAssets.player2.move(gameAssets.player2.center.y);
         gameAssets.ball.posX+=gameAssets.ball.speedX;
         gameAssets.ball.posY+=gameAssets.ball.speedY;
-    
-        // попал ли мяч в ракетку игрока 1
+        //игрок 1 выше верхнего края игрового поля
+        if(gameAssets.player1.top<0){
+            gameAssets.player1.center.y=gameAssets.player1.height/2;  
+            gameAssets.player1.move(gameAssets.player1.center.y);
+        }
+        //игрок 1 ниже нижнего края игрового поля
+        if(gameAssets.player1.bottom>gameAssets.playingField.bottom){
+            gameAssets.player1.center.y=gameAssets.playingField.height - gameAssets.player1.height/2;  
+            gameAssets.player1.move(gameAssets.player1.center.y);
+        }
+        //игрок 2 выше верхнего края игрового поля
+        if(gameAssets.player2.top<0){
+            gameAssets.player2.center.y=gameAssets.player2.height/2;  
+            gameAssets.player2.move(gameAssets.player2.center.y);
+            
+        }
+        //игрок 2 ниже нижнего края игрового поля
+        if(gameAssets.player2.bottom>gameAssets.playingField.bottom){
+            gameAssets.player2.center.y=gameAssets.playingField.height - gameAssets.player2.height/2;  
+            gameAssets.player2.move(gameAssets.player2.center.y);
+        }
+        // мяч попал в ракетку игрока 1
         if (gameAssets.ball.posX == gameAssets.player1.width && gameAssets.ball.posY>gameAssets.player1.top - 3*gameAssets.ball.height/4 && gameAssets.ball.posY+gameAssets.ball.height/4<gameAssets.player1.bottom){
             gameAssets.ball.speedX=-gameAssets.ball.speedX;
             gameAssets.ball.posX=gameAssets.player1.width;  
         }
-        // попал ли мяч в ракетку игрока 2
+        // мяч попал в ракетку игрока 2
         if (gameAssets.ball.posX == gameAssets.playingField.width - gameAssets.player2.width - gameAssets.ball.width && gameAssets.ball.posY>gameAssets.player2.top - 3*gameAssets.ball.height/4 && gameAssets.ball.posY+gameAssets.ball.height/4<gameAssets.player2.bottom){
             gameAssets.ball.speedX=-gameAssets.ball.speedX;
             gameAssets.ball.posX=gameAssets.playingField.width - gameAssets.player2.width - gameAssets.ball.width;
@@ -193,11 +229,6 @@ function tick() {
         }  
         RAF(tick);
     } else if(gameStatus == 2){
-        gameAssets.ball.posX = gameAssets.playingField.center.x - gameAssets.ball.radius;
-        gameAssets.ball.posY = gameAssets.playingField.center.y - gameAssets.ball.radius;
-        gameAssets.ball.move();
-        gameAssets.player1.move(gameAssets.playingField.center.y);
-        gameAssets.player2.move(gameAssets.playingField.center.y);
         gameStatus = 1;
     }
     gameAssets.ball.move();
