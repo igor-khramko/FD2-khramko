@@ -1,0 +1,13 @@
+.score{
+    border: 1px solid green;
+    box-sizing: border-box;
+    width: 70px;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-start{
+    margin: 10px 0;
+    display: block;
+}
