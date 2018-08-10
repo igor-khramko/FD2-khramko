@@ -4,7 +4,7 @@
     width: 70px;
     font-size: 25px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .button-start{

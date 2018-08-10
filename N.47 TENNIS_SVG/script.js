@@ -209,12 +209,12 @@ function tick() {
             gameAssets.player2.move(gameAssets.player2.center.y);
         }
         // мяч попал в ракетку игрока 1
-        if (gameAssets.ball.posX == gameAssets.player1.width + gameAssets.ball.radius && gameAssets.ball.posY>gameAssets.player1.top - 3*gameAssets.ball.radius/2 && gameAssets.ball.posY+gameAssets.ball.radius/2<gameAssets.player1.bottom){
+        if (gameAssets.ball.posX <= gameAssets.player1.width + gameAssets.ball.radius && gameAssets.ball.posY>gameAssets.player1.top - 3*gameAssets.ball.radius/2 && gameAssets.ball.posY+gameAssets.ball.radius/2<gameAssets.player1.bottom){
             gameAssets.ball.speedX=-gameAssets.ball.speedX;
-            gameAssets.ball.posX=gameAssets.player1.width + gameAssets.player1.radius;  
+            gameAssets.ball.posX=gameAssets.player1.width + gameAssets.ball.radius;  
         }
         // мяч попал в ракетку игрока 2
-        if (gameAssets.ball.posX == gameAssets.playingFieldRect.width - gameAssets.player2.width - gameAssets.ball.radius && gameAssets.ball.posY>gameAssets.player2.top - gameAssets.ball.radius/2 && gameAssets.ball.posY+gameAssets.ball.radius/2<gameAssets.player2.bottom){
+        if (gameAssets.ball.posX >= gameAssets.playingFieldRect.width - gameAssets.player2.width - gameAssets.ball.radius && gameAssets.ball.posY>gameAssets.player2.top - gameAssets.ball.radius/2 && gameAssets.ball.posY+gameAssets.ball.radius/2<gameAssets.player2.bottom){
             gameAssets.ball.speedX=-gameAssets.ball.speedX;
             gameAssets.ball.posX=gameAssets.playingFieldRect.width - gameAssets.player2.width - gameAssets.ball.radius;
         }
