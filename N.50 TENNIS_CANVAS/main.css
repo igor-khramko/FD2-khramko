@@ -1,0 +1,16 @@
+.game-field{
+    display: block;
+}
+
+.score{
+    border: 1px solid green;
+    box-sizing: border-box;
+    width: 70px;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.button-start{
+    margin: 10px 0;
+}
