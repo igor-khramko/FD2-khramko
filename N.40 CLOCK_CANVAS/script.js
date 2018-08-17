@@ -13,7 +13,7 @@ function createClock(){
     var fontSize = 16;
     
     var clock = {
-        R : 150,        //радиус часов
+        R : 150,        
         posX : 0,
         posY : 0,
         color : "yellow",
@@ -82,11 +82,16 @@ function updateTime() {
 }
 
 function setRealTimeOnload(currTimeHash){
+    //углы поворота стрелок в каждый момент времени
+    var aHour=currTimeHash.hours/12*Math.PI*2 + currTimeHash.minutes/720*Math.PI*2;     //720 = 12*60                       // отображаемый угол в радианах
+    var aMin=currTimeHash.minutes/60*Math.PI*2 + currTimeHash.seconds/3600*Math.PI*2;   //3600 = 60*60  
+    var aSec=currTimeHash.seconds/60*Math.PI*2;
+    
     context.beginPath();
     context.lineWidth = 6;
     context.strokeStyle = "black";
     context.moveTo(clock.cx, clock.cy);
-    context.lineTo(clock.cx, clock.cy - 0.4*clock.R);
+    context.lineTo(clock.cx + Math.sin(aHour)*0.6*clock.Rh, clock.cy - Math.cos(aHour)*0.6*clock.Rh);
     context.stroke();
     context.closePath();
 
@@ -94,7 +99,7 @@ function setRealTimeOnload(currTimeHash){
     context.lineWidth = 4;
     context.strokeStyle = "green";
     context.moveTo(clock.cx, clock.cy);
-    context.lineTo(clock.cx, clock.cy - 0.5*clock.R);
+    context.lineTo(clock.cx + Math.sin(aMin)*0.9*clock.Rh, clock.cx - Math.cos(aMin)*0.9*clock.Rh);
     context.stroke();
     context.closePath();
 
@@ -102,7 +107,7 @@ function setRealTimeOnload(currTimeHash){
     context.lineWidth = 2;
     context.strokeStyle = "red";
     context.moveTo(clock.cx, clock.cy);
-    context.lineTo(clock.cx, clock.cy - 0.75*clock.R);
+    context.lineTo(clock.cx + Math.sin(aSec)*clock.Rh, clock.cx - Math.cos(aSec)*clock.Rh);
     context.stroke();
     context.closePath();
 }
