@@ -1,0 +1,14 @@
+{
+  "name": "CLOCK_CANVAS",
+  "version": "1.0.0",
+  "description": "CLOCK_CANVAS",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "i.khramko",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
+}
