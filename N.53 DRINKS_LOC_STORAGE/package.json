@@ -1,0 +1,14 @@
+{
+  "name": "DRINKS_LOC_STORAGE",
+  "version": "1.0.0",
+  "description": "DRINKS_LOC_STORAGE",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "i.khramko",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
+}
