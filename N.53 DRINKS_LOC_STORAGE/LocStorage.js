@@ -1,43 +1,41 @@
 "use strict"
 
-function LocStorage(){
+function LocStorage(menuItem){
     var self = this;
-    self.storage = {keys : []};
-    self.addValue = function(category, key, value){
+    self.storage = {};
+    if(menuItem in localStorage){
+        self.storage = JSON.parse(localStorage[menuItem]);
+    }
+    self.addValue = function(key, value){
         self.storage[key] = value;
-        self.storage.keys.push(key);
-        localStorage.setItem(category, JSON.stringify(self.storage));
+        localStorage[menuItem] = JSON.stringify(self.storage);
         return self.storage;
     }
     self.getValue = function(key){
         return self.storage[key];
     }
-    self.deleteValue = function(category, key){
+    self.deleteValue = function(key){
         if(key in self.storage){
             delete self.storage[key];
-            self.storage.keys.splice(self.storage.keys.indexOf(key), 1);
-            localStorage.setItem(category, JSON.stringify(self.storage));
+            localStorage[menuItem] = JSON.stringify(self.storage);
             return true;
         } else{
             return false;
         }
     }
     self.getList = function(){
-        if(self.storage.keys == ""){
-            return "Перечень пуст";
-        } else return self.storage.keys;
+        return Object.keys(self.storage);
     }
 }
 
-var drinkStorage =new LocStorage();
+var drinkStorage = new LocStorage("drinks");
 function addDrink(){
     var drinkName = prompt("Введите название напитка");
     var drinkInfo = {};
     drinkInfo.Type = confirm("Напиток алкогольный?") ? "aлкогольный" : "безалкогольный"; 
     drinkInfo.Recipe = prompt("Введите рецепт напитка");
-    drinkStorage.addValue("drinks", drinkName, drinkInfo);
+    drinkStorage.addValue(drinkName, drinkInfo);
     console.log(drinkStorage);
-    console.log(localStorage);
 }
 function getDrink(){
     var drinkName = prompt("Введите название напитка");
@@ -47,19 +45,19 @@ function getDrink(){
 }
 function deleteDrink(){
     var drinkName = prompt("Введите название удаляемого напитка");
-    console.log(drinkStorage.deleteValue("drinks", drinkName));
+    console.log(drinkStorage.deleteValue(drinkName));
 }
 function getDrinkList(){
     console.log(drinkStorage.getList());
 }
 
-var foodStorage =new LocStorage();
+var foodStorage = new LocStorage("food");
 function addFood(){
     var foodName = prompt("Введите название блюда");
     var foodInfo = {};
     foodInfo.Type = confirm("Блюдо диетическое?") ? "диетическое" : "обычное"; 
     foodInfo.Recipe = prompt("Введите рецепт блюда");
-    foodStorage.addValue("food", foodName, foodInfo);
+    foodStorage.addValue(foodName, foodInfo);
     console.log(foodStorage);
 }
 function getFood(){
@@ -70,7 +68,7 @@ function getFood(){
 }
 function deleteFood(){
     var foodName = prompt("Введите название удаляемого блюда");
-    console.log(foodStorage.deleteValue("food", foodName));
+    console.log(foodStorage.deleteValue(foodName));
 }
 function getFoodList(){
     console.log(foodStorage.getList());
