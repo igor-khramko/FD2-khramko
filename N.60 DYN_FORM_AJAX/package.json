@@ -1,0 +1,16 @@
+{
+  "name": "DYN_FORM_AJAX",
+  "version": "1.0.0",
+  "description": "DYN_FORM_AJAX",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "lite-server"
+  },
+  "author": "i.khramko",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "lite-server": "^2.3.0"
+  }
+}
